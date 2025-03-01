@@ -3,50 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bird Selector</title>
+    <title>Bird Image Selector</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: white;
-            color: black;
+
+        :root {
+            --primary-color: #0674f1;
+            --secondary-color: #0099ff;
+            --bg-color: #92e1fe;
+            --font-color: #333333;
+            --heading-color: #ec803c;
         }
-        .container {
+
+        /* Dark theme */
+        [data-theme="dark"] {
+            --primary-color: #1f1f1f;
+            --secondary-color: #504e4e;
+            --bg-color: #121212;
+            --font-color: #f3f3f3;
+            --heading-color: #ff9d00;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--font-color);
+            text-align: left;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: var(--heading-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            align-content: left;
+            margin-right: 20px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--font-color);
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+            border-radius: 5px;
+        }
+
+        #photographer {
+            font-style: italic;
+            margin-top: 10px;
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 5px 10px;
+        }
+
+        #buttonContainer {
             margin-top: 20px;
         }
-        img {
-            width: 300px;
-            height: auto;
-            border: 2px solid black;
-        }
-        .buttons {
-            margin-top: 10px;
-        }
-        .buttons button {
-            margin: 5px;
-            padding: 10px;
-            cursor: pointer;
-        }
-        .dark-mode {
-            background-color: black;
-            color: white;
-        }
+
     </style>
 </head>
 <body>
-    <main class="container">
-        <img id="bird-image" src="http://www.outgrabe.net/bird00.jpg" alt="Bird">
-        <p id="bird-name">Bird 00</p>
+    <main>
+        <img id="birdImage" src="http://www.outgrabe.net/bird00.jpg" alt="Bird">
+        <p id="photographer">Pardalote by fir0002 (CC-by-NC)</p>
         
-        <div class="buttons">
-            <button onclick="changeImage('bird00')">Bird 00</button>
-            <button onclick="changeImage('bird01')">Bird 01</button>
-            <button onclick="changeImage('bird02')">Bird 02</button>
-            <button onclick="changeImage('bird03')">Bird 03</button>
-            <button onclick="changeImage('bird04')">Bird 04</button>
-        </div>
-        <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+        <div id="buttonContainer"></div>
+
+        <button onclick="toggleTheme()">Toggle Theme</button>
+
+
+        
     </main>
+
+    <script>
+
+        const birds = [
+            { src: "http://www.outgrabe.net/bird00.jpg", photographer: "Pardalote by fir0002 (CC-by-NC)" },
+            { src: "http://www.outgrabe.net/bird01.jpg", photographer: "Purple swamp hen by Toby Hudson (CC-by-SA)" },
+            { src: "http://www.outgrabe.net/bird02.jpg", photographer: "White-headed Stilt by JJ Harrison (CC-by-SA)" },
+            { src: "http://www.outgrabe.net/bird03.jpg", photographer: "Inland Thornbill by Peter Jacobs (CC-by-SA)" },
+            { src: "http://www.outgrabe.net/bird04.jpg", photographer: "Rose Robin by JJ Harrison (CC-by-SA)" }
+        ];
+
+        function changeImage(index) {
+            document.getElementById("birdImage").src = birds[index].src;
+            document.getElementById("photographer").textContent = birds[index].photographer;
+        }
+
+        function createButtons() {
+            const buttonContainer = document.getElementById("buttonContainer");
+
+            birds.forEach((bird, index) => {
+                const button = document.createElement("button");
+                button.textContent = bird.photographer.split(" by ")[0]; 
+                button.onclick = () => changeImage(index);
+                buttonContainer.appendChild(button);
+            });
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.body.getAttribute("data-theme");
+            if (currentTheme === "light") {
+                document.body.setAttribute("data-theme", "dark");
+            } else {
+                document.body.setAttribute("data-theme", "light");
+            }
+        }
+
+        createButtons();
+
+    </script>
 
 </body>
 </html>
